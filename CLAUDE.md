@@ -703,3 +703,5 @@ import { styles } from './styles';
 ## Important Instruction Reminders
 
 - Only create directories when they will contain actual files - avoid empty folders.
+- Make small atomic commits.
+- Use a trunk based development workflow. With short lived branches.
