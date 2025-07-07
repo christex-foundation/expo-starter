@@ -625,7 +625,11 @@ const OptimizedImage = ({ source, ...props }: Props) => {
 ```json
 // .eslintrc.json
 {
-  "extends": ["@react-native-community", "@typescript-eslint/recommended", "prettier"],
+  "extends": [
+    "@react-native-community",
+    "@typescript-eslint/recommended",
+    "prettier"
+  ],
   "rules": {
     "react-hooks/exhaustive-deps": "error",
     "@typescript-eslint/no-unused-vars": "error",
@@ -703,5 +707,5 @@ import { styles } from './styles';
 ## Important Instruction Reminders
 
 - Only create directories when they will contain actual files - avoid empty folders.
-- Make small atomic commits.
+- Make small atomic commits. always confirm before committing.
 - Use a trunk based development workflow. With short lived branches.

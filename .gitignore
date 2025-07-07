@@ -31,6 +31,9 @@ yarn-error.*
 # local env files
 .env*.local
 
+# app.json with sensitive credentials
+app.json
+
 # builds
 android/
 ios/

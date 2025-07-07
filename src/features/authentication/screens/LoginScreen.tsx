@@ -116,7 +116,7 @@ export const LoginScreen = () => {
             onPress={handlePrivyLogin}
             className="w-full"
           >
-            <Text className="text-white font-medium">Login with Privy UIs</Text>
+            Login with Privy UIs
           </Button>
 
           <Button
@@ -124,7 +124,7 @@ export const LoginScreen = () => {
             variant="secondary"
             className="w-full"
           >
-            <Text className="text-white font-medium">Login using Passkey</Text>
+            Login using Passkey
           </Button>
 
           {/* OAuth Providers */}
@@ -141,9 +141,7 @@ export const LoginScreen = () => {
                   disabled={oauth.state.status === 'loading'}
                   className="w-full"
                 >
-                  <Text className="text-foreground font-medium capitalize">
-                    Login with {provider}
-                  </Text>
+                  {`Login with ${provider}`}
                 </Button>
               ))}
             </View>

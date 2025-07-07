@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Pressable, Text, type PressableProps } from 'react-native';
+import { Pressable, Text, View, type PressableProps } from 'react-native';
 
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -66,16 +66,34 @@ const Button = React.forwardRef<
       )}
       {...props}
     >
-      {({ pressed }) => (
-        <Text
-          className={cn(
-            buttonTextVariants({ variant }),
-            pressed && 'opacity-80'
-          )}
-        >
-          {typeof children === 'string' ? children : ''}
-        </Text>
-      )}
+      {({ pressed }) => {
+        // Check if children is text content (string, number, or array of strings/numbers)
+        const isTextContent = typeof children === 'string' || 
+                            typeof children === 'number' ||
+                            (Array.isArray(children) && children.every(child => 
+                              typeof child === 'string' || typeof child === 'number'
+                            ));
+        
+        if (isTextContent) {
+          return (
+            <Text
+              className={cn(
+                buttonTextVariants({ variant }),
+                pressed && 'opacity-80'
+              )}
+            >
+              {children}
+            </Text>
+          );
+        }
+        
+        // For React elements, wrap in a View to handle press opacity
+        return (
+          <View style={pressed ? { opacity: 0.8 } : undefined}>
+            {children}
+          </View>
+        );
+      }}
     </Pressable>
   );
 });
