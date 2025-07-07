@@ -1,8 +1,8 @@
+import React from "react";
 import { SafeAreaView, Text, View } from "react-native";
 import Constants from "expo-constants";
-import LoginScreen from "@/components/LoginScreen";
+import { LoginScreen, UserScreen } from "@/features/authentication";
 import { usePrivy } from "@privy-io/expo";
-import { UserScreen } from "@/components/UserScreen";
 
 export default function Index() {
   const { user } = usePrivy();
