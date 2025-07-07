@@ -1,8 +1,8 @@
 // Authentication feature public API
 
-// Components
-export { default as LoginScreen } from './components/LoginScreen';
-export { UserScreen } from './components/UserScreen';
+// Screens
+export { LoginScreen } from './screens/LoginScreen';
+export { UserScreen } from './screens/UserScreen';
 
 // Hooks
 // export { useAuth } from './hooks/useAuth';
