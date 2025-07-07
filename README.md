@@ -10,7 +10,13 @@ This demonstrates a minimal working installation of the privy sdk in a fresh exp
    yarn
    ```
 
-2. Configure an app client in your [Dashboard](https://dashboard.privy.io/apps?page=settings&setting=clients), and add your Privy app ID and app client ID in `app.json`
+2. Copy the example configuration file and add your credentials:
+
+   ```sh
+   cp app.json.example app.json
+   ```
+
+3. Configure an app client in your [Dashboard](https://dashboard.privy.io/apps?page=settings&setting=clients), and add your Privy app ID and app client ID in `app.json`
 
    ```json
    ...

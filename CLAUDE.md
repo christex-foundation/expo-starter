@@ -22,10 +22,14 @@ We follow a **domain-based (feature-first) organization** as recommended by the 
 ### Project Structure
 
 ```
+app/                             # Expo Router screens
+├── _layout.tsx                  # Root layout
+└── index.tsx                    # Entry screen
+
 src/
 ├── features/                    # Domain-based organization
 │   ├── authentication/
-│   │   ├── components/
+│   │   ├── components/          # Create when needed
 │   │   │   ├── LoginForm/
 │   │   │   │   ├── index.ts
 │   │   │   │   ├── LoginForm.tsx
@@ -33,53 +37,53 @@ src/
 │   │   │   └── SignupForm/
 │   │   ├── screens/
 │   │   │   ├── LoginScreen.tsx
-│   │   │   └── SignupScreen.tsx
-│   │   ├── hooks/
+│   │   │   └── UserScreen.tsx
+│   │   ├── hooks/               # Create when needed
 │   │   │   └── useAuth.ts
-│   │   ├── services/
+│   │   ├── services/            # Create when needed
 │   │   │   └── authService.ts
-│   │   ├── types/
+│   │   ├── types/               # Create when needed
 │   │   │   └── auth.types.ts
 │   │   └── index.ts             # Feature public API
 │   │
-│   ├── todos/
-│   │   ├── components/
-│   │   ├── screens/
-│   │   ├── hooks/
-│   │   └── services/
+│   ├── profile/
+│   │   └── index.ts
 │   │
-│   └── profile/
-│       ├── components/
-│       ├── screens/
-│       └── hooks/
+│   └── [other-features]/        # Add features as needed
 │
 ├── shared/                      # Shared across features
 │   ├── components/
-│   │   ├── ui/                  # Reusable UI components
-│   │   │   ├── Button/
-│   │   │   ├── Input/
-│   │   │   └── Modal/
-│   │   └── layout/              # Layout components
+│   │   ├── ui/                  # React Native Reusables components
+│   │   │   ├── button.tsx
+│   │   │   └── index.ts
+│   │   └── layout/              # Layout components (create when needed)
 │   │       ├── Container/
 │   │       └── Header/
 │   ├── hooks/                   # Global hooks
-│   ├── services/                # API client, storage, etc.
-│   ├── utils/                   # Helper functions
+│   ├── providers/               # React context providers
+│   │   └── QueryProvider.tsx
+│   ├── utils/                   # Helper functions (create when needed)
 │   └── constants/               # App constants
+│       ├── design.ts
+│       └── index.ts
+│
+├── lib/                         # Utility functions
+│   └── utils.ts                 # cn() helper and utilities
 │
 ├── navigation/
-│   ├── AppNavigator.tsx
-│   ├── AuthNavigator.tsx
-│   └── types.ts
+│   ├── expo-router-types.ts     # Expo Router type exports
+│   ├── types.ts                 # Navigation types
+│   └── index.ts
 │
-├── store/                       # Global state
+├── store/                       # Global state (Zustand)
 │   ├── index.ts
 │   └── stores/
-│       ├── authStore.ts
-│       └── settingsStore.ts
+│       └── authStore.ts
 │
 └── types/                       # Global types
-    └── global.types.ts
+    ├── api.types.ts
+    ├── global.types.ts
+    └── index.ts
 ```
 
 ### Key Rules
@@ -88,13 +92,15 @@ src/
 2. **Public API**: Use `index.ts` to expose only what other features need
 3. **Depth Limit**: Maximum 3-4 nested folders
 4. **Shared Code**: Only put truly shared code in the `shared/` directory
+5. **Create When Needed**: Only create directories when they contain actual files (avoid empty folders)
+6. **Expo Router**: Use the `app/` directory for Expo Router screens, `src/` for business logic
 
 ### Example Feature Index
 
 ```typescript
 // features/authentication/index.ts
 export { LoginScreen } from './screens/LoginScreen';
-export { SignupScreen } from './screens/SignupScreen';
+export { UserScreen } from './screens/UserScreen';
 export { useAuth } from './hooks/useAuth';
 export type { LoginCredentials, User } from './types/auth.types';
 ```
@@ -103,14 +109,27 @@ export type { LoginCredentials, User } from './types/auth.types';
 
 ## Styling Guidelines
 
-We use **React Native Reusables** (shadcn equivalent) with **NativeWind v4** for styling. This provides type-safe, performant styling with a familiar Tailwind CSS approach.
+We use **React Native Reusables** (shadcn/ui for React Native) with **NativeWind v4** for styling. This provides type-safe, performant styling with a familiar Tailwind CSS approach.
 
 ### Setup
 
+React Native Reusables is not an npm package. Instead, components are added via a CLI tool:
+
 ```bash
-# Install dependencies
-npm install react-native-reusables nativewind react-native-svg
-npm install -D tailwindcss
+# Install the CLI globally
+npm install -g react-native-reusables
+
+# Add components (example)
+npx react-native-reusables@latest add button
+
+# Required dependencies (already installed)
+# - nativewind ^4.0.0
+# - react-native-svg
+# - tailwindcss
+# - class-variance-authority
+# - clsx
+# - tailwind-merge
+# - tailwindcss-animate
 ```
 
 ### Styling Approach
@@ -119,8 +138,8 @@ npm install -D tailwindcss
 
 ```typescript
 // ✅ Good - Use reusable components
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/shared/components/ui/button';
+import { Input } from '@/shared/components/ui/input';
 
 const LoginForm = () => {
   return (
@@ -262,8 +281,8 @@ export const useAuthStore = create<AuthState>()(
         }
       },
     }),
-    { name: 'auth-store' },
-  ),
+    { name: 'auth-store' }
+  )
 );
 ```
 
@@ -354,7 +373,7 @@ export const useAuth = () => {
         console.error('Login failed:', error);
       }
     },
-    [login],
+    [login]
   );
 
   return {
@@ -443,7 +462,7 @@ export interface UpdateTodoRequest {
 ### Navigation Types
 
 ```typescript
-// navigation/types.ts
+// navigation/types.ts (for React Navigation)
 export type RootStackParamList = {
   Auth: undefined;
   Main: undefined;
@@ -460,6 +479,17 @@ export type MainStackParamList = {
   Profile: undefined;
   Settings: undefined;
   TodoDetail: { todoId: string };
+};
+
+// navigation/expo-router-types.ts (for Expo Router)
+import type { LinkingOptions } from '@react-navigation/native';
+
+export type ExpoRouterParams = {
+  '/(auth)/login': undefined;
+  '/(auth)/signup': undefined;
+  '/(tabs)/home': undefined;
+  '/(tabs)/profile': undefined;
+  '/todo/[id]': { id: string };
 };
 ```
 
@@ -595,7 +625,11 @@ const OptimizedImage = ({ source, ...props }: Props) => {
 ```json
 // .eslintrc.json
 {
-  "extends": ["@react-native-community", "@typescript-eslint/recommended", "prettier"],
+  "extends": [
+    "@react-native-community",
+    "@typescript-eslint/recommended",
+    "prettier"
+  ],
   "rules": {
     "react-hooks/exhaustive-deps": "error",
     "@typescript-eslint/no-unused-vars": "error",
@@ -627,10 +661,12 @@ import { View, Text, Pressable } from 'react-native';
 
 // 2. Third-party imports
 import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 
 // 3. Internal imports (absolute paths)
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import { useAuth } from '@/features/authentication';
+import { cn } from '@/lib/utils';
 
 // 4. Relative imports
 import { LoginForm } from './LoginForm';
@@ -651,6 +687,8 @@ import { styles } from './styles';
 - Write tests for critical functionality
 - Use meaningful component and variable names
 - Implement proper error handling
+- Use Expo Router for navigation in the `app/` directory
+- Create directories only when they contain files
 
 ### Don'ts ❌
 
@@ -661,5 +699,13 @@ import { styles } from './styles';
 - Don't skip TypeScript types
 - Don't ignore performance optimizations
 - Don't forget accessibility considerations
+- Don't create empty directories
+- Don't install react-native-reusables as an npm package (use CLI instead)
 
 ---
+
+## Important Instruction Reminders
+
+- Only create directories when they will contain actual files - avoid empty folders.
+- Make small atomic commits. always confirm before committing.
+- Use a trunk based development workflow. With short lived branches.

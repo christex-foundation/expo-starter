@@ -1,42 +1,42 @@
 import type { NavigatorScreenParams } from '@react-navigation/native';
 
 // Root Stack - Main navigation structure
-export type RootStackParamList = {
+export interface RootStackParamList {
   // Auth flow screens
   Auth: NavigatorScreenParams<AuthStackParamList>;
   // Main app screens (after authentication)
   Main: NavigatorScreenParams<MainTabParamList>;
-};
+}
 
 // Auth Stack - Authentication related screens
-export type AuthStackParamList = {
+export interface AuthStackParamList {
   Login: undefined;
   Signup: undefined;
   ForgotPassword: undefined;
   VerifyEmail: { email: string };
-};
+}
 
 // Main Tab Navigator - Bottom tabs for authenticated users
-export type MainTabParamList = {
+export interface MainTabParamList {
   Home: undefined;
   Profile: undefined;
   Settings: undefined;
-};
+}
 
 // Modal Stack - For modal screens that overlay the main app
-export type ModalStackParamList = {
+export interface ModalStackParamList {
   EditProfile: undefined;
   ChangePassword: undefined;
   Notifications: undefined;
-};
+}
 
 // Feature-specific navigation params
-export type TodoStackParamList = {
+export interface TodoStackParamList {
   TodoList: undefined;
   TodoDetail: { todoId: string };
   TodoCreate: undefined;
   TodoEdit: { todoId: string };
-};
+}
 
 // Type helpers for navigation
 export type ScreenProps<

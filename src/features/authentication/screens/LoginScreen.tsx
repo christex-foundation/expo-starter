@@ -1,11 +1,15 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
-import { LoginWithOAuthInput, useLoginWithOAuth } from '@privy-io/expo';
+
+import { View, Text, ScrollView } from 'react-native';
+
+import type { LoginWithOAuthInput} from '@privy-io/expo';
+import { useLoginWithOAuth } from '@privy-io/expo';
 import { useLogin } from '@privy-io/expo/ui';
 import { useLoginWithPasskey } from '@privy-io/expo/passkey';
 import Constants from 'expo-constants';
 import * as Application from 'expo-application';
 import * as Linking from 'expo-linking';
+
 import { Button } from '@/shared/components/ui/button';
 
 type OAuthProvider = 'github' | 'google' | 'discord' | 'apple';
@@ -112,7 +116,7 @@ export const LoginScreen = () => {
             onPress={handlePrivyLogin}
             className="w-full"
           >
-            <Text className="text-white font-medium">Login with Privy UIs</Text>
+            Login with Privy UIs
           </Button>
 
           <Button
@@ -120,7 +124,7 @@ export const LoginScreen = () => {
             variant="secondary"
             className="w-full"
           >
-            <Text className="text-white font-medium">Login using Passkey</Text>
+            Login using Passkey
           </Button>
 
           {/* OAuth Providers */}
@@ -137,9 +141,7 @@ export const LoginScreen = () => {
                   disabled={oauth.state.status === 'loading'}
                   className="w-full"
                 >
-                  <Text className="text-foreground font-medium capitalize">
-                    Login with {provider}
-                  </Text>
+                  {`Login with ${provider}`}
                 </Button>
               ))}
             </View>
