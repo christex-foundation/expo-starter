@@ -1,7 +1,9 @@
 import React from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { focusManager } from '@tanstack/react-query';
-import { AppState, AppStateStatus, Platform } from 'react-native';
+
+import type { AppStateStatus} from 'react-native';
+import { AppState, Platform } from 'react-native';
+
+import { QueryClient, QueryClientProvider , focusManager } from '@tanstack/react-query';
 
 // Setup focus management for React Native
 function onAppStateChange(status: AppStateStatus) {

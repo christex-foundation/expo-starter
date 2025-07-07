@@ -1,11 +1,15 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
-import { LoginWithOAuthInput, useLoginWithOAuth } from '@privy-io/expo';
+
+import { View, Text, ScrollView } from 'react-native';
+
+import type { LoginWithOAuthInput} from '@privy-io/expo';
+import { useLoginWithOAuth } from '@privy-io/expo';
 import { useLogin } from '@privy-io/expo/ui';
 import { useLoginWithPasskey } from '@privy-io/expo/passkey';
 import Constants from 'expo-constants';
 import * as Application from 'expo-application';
 import * as Linking from 'expo-linking';
+
 import { Button } from '@/shared/components/ui/button';
 
 type OAuthProvider = 'github' | 'google' | 'discord' | 'apple';

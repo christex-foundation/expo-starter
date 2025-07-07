@@ -1,5 +1,7 @@
-import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
-import type { ErrorResponse } from '@/src/types/global.types';
+import type { UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
+
+import type { ApiError } from '@/src/types/global.types';
 
 // Base API configuration
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://api.example.com';
@@ -18,9 +20,10 @@ async function fetchApi<T>(
   });
 
   if (!response.ok) {
-    const error: ErrorResponse = await response.json().catch(() => ({
+    const error: ApiError = await response.json().catch(() => ({
       message: 'An unexpected error occurred',
       code: response.status.toString(),
+      statusCode: response.status,
     }));
     throw error;
   }
@@ -32,11 +35,11 @@ async function fetchApi<T>(
 export function useApiQuery<T>(
   key: string | string[],
   endpoint: string,
-  options?: Omit<UseQueryOptions<T, ErrorResponse>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<T, ApiError>, 'queryKey' | 'queryFn'>
 ) {
   const queryKey = Array.isArray(key) ? key : [key];
   
-  return useQuery<T, ErrorResponse>({
+  return useQuery<T, ApiError>({
     queryKey,
     queryFn: () => fetchApi<T>(endpoint),
     ...options,
@@ -47,9 +50,9 @@ export function useApiQuery<T>(
 export function useApiMutation<TData, TVariables>(
   endpoint: string,
   method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' = 'POST',
-  options?: UseMutationOptions<TData, ErrorResponse, TVariables>
+  options?: UseMutationOptions<TData, ApiError, TVariables>
 ) {
-  return useMutation<TData, ErrorResponse, TVariables>({
+  return useMutation<TData, ApiError, TVariables>({
     mutationFn: async (variables) => {
       return fetchApi<TData>(endpoint, {
         method,

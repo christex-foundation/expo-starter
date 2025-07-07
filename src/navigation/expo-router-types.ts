@@ -1,4 +1,4 @@
-import { Href } from 'expo-router';
+import type { Href } from 'expo-router';
 
 // Define all possible routes in your app
 export type AppRoutes = 
@@ -16,7 +16,7 @@ export type AppRoutes =
   | '/todos/[id]/edit';
 
 // Type-safe route params
-export type RouteParams = {
+export interface RouteParams {
   '/': undefined;
   '/login': undefined;
   '/signup': undefined;
@@ -29,10 +29,10 @@ export type RouteParams = {
   '/todos/[id]': { id: string };
   '/todos/create': undefined;
   '/todos/[id]/edit': { id: string };
-};
+}
 
 // Helper type for type-safe navigation
-export type TypedHref<T extends AppRoutes> = Href<T>;
+export type TypedHref<T extends AppRoutes> = T;
 
 // Helper function for creating type-safe routes
 export function createRoute<T extends AppRoutes>(
@@ -50,7 +50,7 @@ export function createRoute<T extends AppRoutes>(
 }
 
 // Screen props helper for Expo Router
-export type ScreenProps<T extends AppRoutes> = {
+export interface ExpoRouterScreenProps<T extends AppRoutes> {
   params?: RouteParams[T];
   searchParams?: Record<string, string>;
-};
+}

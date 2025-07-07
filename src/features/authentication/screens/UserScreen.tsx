@@ -1,16 +1,18 @@
 import React, { useState, useCallback } from "react";
+
 import { Text, TextInput, View, Button, ScrollView } from "react-native";
 
+import type {
+  PrivyEmbeddedWalletProvider} from "@privy-io/expo";
 import {
   usePrivy,
   useEmbeddedEthereumWallet,
   getUserEmbeddedEthereumWallet,
-  PrivyEmbeddedWalletProvider,
   useLinkWithOAuth,
 } from "@privy-io/expo";
 import Constants from "expo-constants";
 import { useLinkWithPasskey } from "@privy-io/expo/passkey";
-import { PrivyUser } from "@privy-io/public-api";
+import type { PrivyUser } from "@privy-io/public-api";
 
 const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
   if (x.type === "phone") {

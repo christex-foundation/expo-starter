@@ -4,6 +4,7 @@
  */
 
 import { useColorScheme } from 'react-native';
+
 import { Colors } from '@/shared/constants';
 
 // Theme-aware color mapping
