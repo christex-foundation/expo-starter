@@ -1,4 +1,3 @@
-import type { Href } from 'expo-router';
 
 // Define all possible routes in your app
 export type AppRoutes = 
